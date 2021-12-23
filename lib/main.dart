@@ -13,14 +13,17 @@ class DummyPage extends StatefulWidget {
   _DummyPageState createState() => _DummyPageState();
 }
 
-
 class _DummyPageState extends State<DummyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white60,
         body: Column(
-          children: [Text("asdfa")],
+          children: [
+            ListView(
+              children: [Card()],
+            )
+          ],
         ));
   }
 }
