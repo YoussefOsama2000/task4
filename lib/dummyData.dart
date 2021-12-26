@@ -7,6 +7,7 @@ class Product {
   int productId = currentID;
   String description;
   double price;
+  bool fav = false;
   Product(
       {required this.image,
       required this.productName,
