@@ -1,120 +1,67 @@
+import 'cart.dart';
+import 'package:card_dummy_app/cart.dart';
+import 'package:card_dummy_app/login.dart';
 import 'package:flutter/material.dart';
-import 'dummyData.dart';
+import 'favorite.dart';
+import 'home.dart';
+import 'details.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: DummyPage(),
+    routes: {
+      'login': (context) => LoginPage(),
+      'main': (context) => MainPage(),
+      'details': (context) => Details(),
+    },
+    initialRoute: 'login',
   ));
 }
 
-class DummyPage extends StatefulWidget {
-  const DummyPage({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  _DummyPageState createState() => _DummyPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _DummyPageState extends State<DummyPage> {
-  DummyData dummyData = DummyData();
-  List<Widget> cards() {
-    List<Widget> cardsList = [];
-    for (int i = 0; i < dummyData.product.length; i++) {
-      cardsList.add(
-        Card(
-          elevation: 3.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-          color: Colors.white,
-          child: Padding(
-            padding: EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-                        'assets/$i.jpg',
-                      ),
-                      Positioned(
-                        bottom: 5,
-                        right: 5,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              if (dummyData.product[i].fav == true)
-                                dummyData.product[i].fav = false;
-                              else
-                                dummyData.product[i].fav = true;
-                            });
-                          },
-                          child: Icon(
-                            Icons.favorite_sharp,
-                            color: dummyData.product[i].fav == true
-                                ? Colors.red
-                                : Colors.black45,
-                            size: 60,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    children: [
-                      Text(
-                        dummyData.product[i].productName,
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Text(
-                        '${dummyData.product[i].price}\$',
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-      );
-    }
-    return cardsList;
-  }
-
+class _MainPageState extends State<MainPage> {
+  int selectedIndex = 0;
+  List body = [HomePage(), Favorite(), Cart()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white60,
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView(
-                children: cards(),
-              ),
+      body: body[selectedIndex],
+      backgroundColor: Colors.white,
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blue,
+        currentIndex: selectedIndex,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.black87,
+        iconSize: 40,
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            label: 'Home',
+            icon: Icon(
+              Icons.home,
             ),
-            TextButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.favorite_border),
-                    Text('favourite page')
-                  ],
-                ))
-          ],
-        ));
+          ),
+          BottomNavigationBarItem(
+            label: 'fav',
+            icon: Icon(Icons.favorite),
+          ),
+          BottomNavigationBarItem(
+            label: 'cart',
+            icon: Icon(
+              Icons.shopping_basket,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
